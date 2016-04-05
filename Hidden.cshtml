@@ -1,0 +1,33 @@
+﻿@{
+  /*  if(!User.IsInRole("Admin")){
+        Response.Redirect("!~/404");
+    }*/
+    Layout="~/_SiteLayout.cshtml";
+    var db= Database.Open("StarterSite");
+    var selectQueryString="SELECT * FROM Product ORDER BY Price DESC";
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Products</title>
+    </head>
+    <body>
+        <h1>Products List</h1>
+        
+            @foreach(var row in db.Query(selectQueryString)){
+                <form method="post" action="/DeleteProduct2">
+                <input type="hidden" name="id" value="@row.ID">
+                <label>Product Name: @row.Product</label>
+                <label>Product Description: @row.Description</label>
+                    <label>Product Price: @row.Price</label>
+                    <input type="submit" value="Delete">
+                    <hr>                
+                </form>
+            }
+            </tbody>
+        </table>
+    </body>
+</html>

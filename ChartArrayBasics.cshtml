@@ -1,0 +1,20 @@
+﻿@{
+    var myChart = new Chart(width:600,height: 400,theme:ChartTheme.Yellow);
+    myChart.AddTitle("Chart Title");
+    myChart.AddSeries(name: "Employee",xValue:new[]{"Peter","Andrew","Julie","Mary","Dave"},
+                        yValues:new[]{"2","6","4","5","3"}
+    ) ;   
+    myChart.Write();         
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        
+    </body>
+</html>

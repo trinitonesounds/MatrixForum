@@ -1,0 +1,35 @@
+﻿@{
+    Layout="~/_SiteLayout.cshtml";
+    var db= Database.Open("StarterSite");
+    var productID=UrlData[0];
+    if(productID.IsEmpty()){
+        Response.Redirect(@Href("~/EditProducts"));
+    }
+    var row = db.QuerySingle("SELECT * FROM Product WHERE ID=@0",productID);
+    if(IsPost && !productID.IsEmpty()){
+        var deleteQuery="DELETE FROM Product WHERE ID=@0";
+        db.Execute(deleteQuery,productID);
+        Response.Redirect(@Href("~/EditProducts"));
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Delete Product</title>
+    </head>
+    <body>
+        <h1>Delete product - Confirmation</h1>
+        <form method="post" action="">
+        <p>Are you sure you want to delete the following product</p>
+        <p>Product Name: @row.Product</p>
+        <p>Description: @row.Description</p>
+        <p>Price: @row.Price</p>
+            <p><input type="submit" value="Confirm"></p>
+        </form>
+      
+        
+    </body>
+</html>

@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Admin";
+    var db = Database.Open("StarterSite");
+    var selectQuery="SELECT * FROM UserProfile ORDER BY UserId";
+    Session["Test"]="Testing Session Variables";
+    var myInfo = new List<string>{WebSecurity.CurrentUserName,DateTime.Now.ToLongDateString()};
+    Session["Info"]=myInfo;
+    AppState["MyApplication"]="My Application Variable";
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <h1>Admin Page</h1>
+        
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach(var row in db.Query(selectQuery)){
+                Response.Cookies["UserInfo"].Value="User Information";
+                Response.Cookies["UserInfo"]["Email"]=row.Email;
+                Response.Cookies["UserInfo"]["Time"]=DateTime.Now.ToLongDateString();
+                <tr>
+                    <td>@row.UserId</td>
+                    <td>@row.Email</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </body>
+    </body>
+</html>

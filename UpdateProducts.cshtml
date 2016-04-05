@@ -1,0 +1,66 @@
+﻿@{
+     Layout = "~/_SiteLayout.cshtml";
+     var productID=UrlData[0];
+     var db =Database.Open("StarterSite");
+     if(productID.IsEmpty()){
+         Response.Redirect(@Href("~/EditProducts"));
+     }
+     var selectQueryString="SELECT * FROM Product WHERE ID=@0";
+     var row = db.QuerySingle(selectQueryString,productID);
+     var name = row.Product;
+     var description = row.Description;
+     var price = row.Price;
+     if(IsPost){
+        name=Request["product"];
+        if(String.IsNullOrEmpty(name)){
+            ModelState.AddError("product","Product name is required");
+        }
+        description=Request["description"];
+        if(String.IsNullOrEmpty(description)){
+             ModelState.AddError("description","Product description is required");
+        }
+        price =Request["price"];
+        if(String.IsNullOrEmpty(price)){
+             ModelState.AddError("price","Product price is required");
+        }
+        
+        if(ModelState.IsValid){
+            var updateQuery="UPDATE Product SET Product=@0, Description=@1, Price=@2 WHERE ID=@3";
+                 
+            db.Execute(updateQuery,name,description,price,productID);
+            Response.Redirect(@Href("~/EditProducts"));
+        }
+
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Update Product</title>
+    </head>
+    <body>
+        <h1>Update Product</h1>
+     <form method="post" action="">
+        <fieldset>
+        <legend>Update Product</legend>
+            <div>
+            <label for="product">Product Name:</label>
+            <input type="text" name="product" value="@name"> 
+            </div>
+            <div>
+            <label for="description" >Description:</label>
+            <input type="text" name="description" value="@description"> 
+            </div>
+            <div>
+            <label for="price">Price:</label>
+            <input type="text" name="price" value="@price"> 
+            </div>
+            <input type="submit" value="Update Product" name="submit">
+        </fieldset>
+        
+        </form>
+    </body>
+</html>

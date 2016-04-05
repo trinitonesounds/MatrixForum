@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    var myInfo = (List<string>)Session["Info"];
+
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <h1>Reading Application Variables</h1>
+        <h2>Application Variable: <em>@AppState["MyApplication"]</em></h2>
+        <hr>
+        <h1>Reading Session Variables</h1>
+        <h2>Session Variable: <em>@Session["Test"]</em></h2>
+        <hr>
+        <h1>Reading a List of Session Variables</h1>
+        <h2>First Session Variable: @myInfo[0]</h2>
+        <h2>Second Session Variable: @myInfo[1]</h2>
+        <hr>
+        <h1>Reading Cookies</h1>
+        <h2>Email: <em>@Request.Cookies["UserInfo"]["Email"]</em></h2>
+        <h2>Date: <em>@Request.Cookies["UserInfo"]["Time"]</em></h2>
+        <h1>First Chart</h1>
+        <figure>
+        <img src="ChartArrayBasics.cshtml" alt="Data Query">        
+        </figure>
+        <h1>Second Chart</h1>
+        <figure>
+        <img src="ChartDataQuery.cshtml" alt="Data Query">        
+        </figure>
+        
+    </body>
+</html>

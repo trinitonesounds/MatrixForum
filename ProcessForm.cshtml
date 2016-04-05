@@ -1,0 +1,24 @@
+﻿@{
+    Layout="~/_SiteLayout.cshtml";
+    var fName = Request.QueryString["firstName"];
+    var lName = Request.QueryString["lastName"];
+    var age = Request.QueryString["age"];
+    var startTime = Request.Cookies["StartTime"].Value;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <h1>Start Time: @startTime</h1>
+        <h1>You information:</h1>
+        <h2>First Name: <em>@fName</em></h2>
+        <h2>Last Name: <em>@lName</em></h2>
+        <h2>Age: <em>@age</em></h2>
+
+    </body>
+</html>

@@ -1,0 +1,20 @@
+﻿@{
+    var db = Database.Open("StarterSite");
+    var data =db.Query("SELECT Product, Price FROM Product");
+    var myChart = new Chart(width:600,height:400,theme:ChartTheme.Vanilla3D);
+    myChart.AddTitle("Product Sales");
+    myChart.DataBindTable(dataSource:data,xField:"Product");
+    myChart.Write();
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        
+    </body>
+</html>

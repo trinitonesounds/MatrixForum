@@ -1,0 +1,64 @@
+﻿@{
+    Layout="~/_SiteLayout.cshtml";
+    var db= Database.Open("StarterSite");
+    var product=Request["product"];
+    var description=Request["description"];
+    var price =Request["price"];
+    if(IsPost){
+        product=Request["product"];
+        if(product.IsEmpty()){
+            ModelState.AddError("product","Product name is required");
+        }
+        description=Request["description"];
+        if(description.IsEmpty()){
+             ModelState.AddError("description","Product description is required");
+        }
+        price =Request["price"];
+        if(price.IsEmpty()){
+             ModelState.AddError("price","Product price is required");
+        }
+        if(!price.IsFloat()){
+            ModelState.AddError("price","Product price must be a number");
+        }
+        if(ModelState.IsValid){
+            var insertQuery="INSERT INTO Product (Product,Description,Price)"+
+                            "VALUES (@0,@1,@2)";
+            db.Execute(insertQuery,product,description,price);
+            Response.Redirect(@Href("~/Products"));
+        }
+
+    }
+
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Add Products</title>
+    </head>
+    <body>
+        @Html.ValidationSummary("Error with your submission")
+        <form method="post" action="">
+        <fieldset>
+        <legend>Add Product</legend>
+            <div>
+            <label for="product">Product Name:</label>
+            <input type="text" name="product" value="@Request["product"]"> 
+            </div>
+            <div>
+            <label for="description" >Description:</label>
+            <input type="text" name="description" value="@Request["description"]"> 
+            </div>
+            <div>
+            <label for="price">Price:</label>
+            <input type="text" name="price" value="@Request["price"]"> 
+            </div>
+            <input type="submit" value="Add New Product" name="submit">
+        </fieldset>
+        
+        </form>
+        
+    </body>
+</html>
