@@ -4,16 +4,29 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 }
 
+
 @{
+
+//user is for checking if email already exists
+//userName is for checking if username already exists
+
+
     Layout = "~/_SiteLayout.cshtml";
     Page.Title = "Register";
 
     // Initialize general page variables
+
+    var username = "";
+
     var email = "";
     var password = "";
     var confirmPassword = "";
 
+
     // Setup validation
+    Validation.RequireField("username", "You must specify a username.");
+
+
     Validation.RequireField("email", "You must specify an email address.");
     Validation.RequireField("password", "Password cannot be blank.");
     Validation.Add("confirmPassword",
@@ -24,9 +37,23 @@
             minLength: 6,
             errorMessage: "Password must be at least 6 characters"));
 
+
+            //Username Validation
+            Validation.Add("username",
+        Validator.StringLength(
+            maxLength: Int32.MaxValue,
+            minLength: 5,
+            errorMessage: "username must be at least 5 characters"));
+
+
     // If this is a POST request, validate and process data
     if (IsPost) {
         AntiForgery.Validate();
+
+
+        username = Request.Form["username"];
+
+
         email = Request.Form["email"];
         password = Request.Form["password"];
         confirmPassword = Request.Form["confirmPassword"];
@@ -41,11 +68,27 @@
             // Insert a new user into the database
             var db = Database.Open("StarterSite");
 
-            // Check if user already exists
+            // Check if email already exists
             var user = db.QuerySingle("SELECT Email FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", email);
-            if (user == null) {
+
+
+            //Check if Username already exists
+            var userName = db.QuerySingle("SELECT Username FROM UserProfile WHERE LOWER(Username) = LOWER(@0)", username); //@2 = out of range error...but theres 3 columns in that DB...??
+
+
+
+            //EMAIL AND USERNAME
+
+            if (user == null && userName == null) {
                 // Insert email into the profile table
-                db.Execute("INSERT INTO UserProfile (Email) VALUES (@0)", email);
+                db.Execute("INSERT INTO UserProfile (Email, Username) VALUES (@0,@1)", email, username);
+
+
+    //            db.Execute("INSERT INTO UserProfile (Username) VALUES (@0)", username);
+
+
+
+
                 var userResult = db.QuerySingle("SELECT UserId FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", email);
                 var roleResult = db.QuerySingle("SELECT RoleId FROM webpages_Roles WHERE RoleName=@0","Member");
                 db.Execute("INSERT INTO webpages_UsersInRoles (UserId,RoleId) Values (@0,@1)", userResult.UserId,roleResult.RoleId);
@@ -79,11 +122,37 @@
                 }
             } else {
                 // User already exists
-                ModelState.AddFormError("Email address is already in use.");
-            }
+                ModelState.AddFormError("Email or username address is already in use.");
+
+
+
+
+
+
+//UPLOAD IMAGE:
+
+
+WebImage photo = null;
+ var newFileName = "";
+ var imagePath = "";
+ if(IsPost){
+ photo = WebImage.GetImageFromRequest();
+ if(photo != null){
+ newFileName = Guid.NewGuid().ToString() + "_" +
+ Path.GetFileName(photo.FileName);
+ imagePath = @"Images\" + newFileName;
+ photo.Save(@"~\" + imagePath);
+ }
+ }
+
+
+ 
         }
     }
 }
+
+}
+
 
 <hgroup class="title">
     <h1>@Page.Title.</h1>
@@ -98,6 +167,14 @@
     <fieldset>
         <legend>Registration Form</legend>
         <ol>
+
+            <li class="username">
+                <label for="username" @if(!ModelState.IsValidField("username")){<text>class="error-label"</text>}>Username</label>
+                <input type="text" id="username" name="username" value="@username" @Validation.For("username") />
+                @* Write any email validation errors to the page *@
+                @Html.ValidationMessage("username")
+            </li>
+
             <li class="email">
                 <label for="email" @if(!ModelState.IsValidField("email")){<text>class="error-label"</text>}>Email address</label>
                 <input type="text" id="email" name="email" value="@email" @Validation.For("email") />
@@ -132,6 +209,28 @@
                 *@
             </li>
         </ol>
+
+
+
+<!--Upload Image-->
+        <form action="" method="post" enctype="multipart/form-data">
+ <fieldset>
+ <legend> Upload Image </legend>
+ <label for="Image">Image</label>
+ <input type="file" name="Image" />
+ <br/>
+ <input type="submit" value="Upload" />
+ </fieldset>
+ </form>
+
+
+
+<br><br>
         <input type="submit" value="Register" />
     </fieldset>
 </form>
+
+
+
+
+ 
