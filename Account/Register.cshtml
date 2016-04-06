@@ -71,27 +71,34 @@
             // Check if email already exists
             var user = db.QuerySingle("SELECT Email FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", email);
 
-
             //Check if Username already exists
             var userName = db.QuerySingle("SELECT Username FROM UserProfile WHERE LOWER(Username) = LOWER(@0)", username); //@2 = out of range error...but theres 3 columns in that DB...??
 
-
-
-            //EMAIL AND USERNAME
+            //EMAIL AND USERNAME AND IMAGE
 
             if (user == null && userName == null) {
-                // Insert email into the profile table
+                // Insert email and username into the profile table
                 db.Execute("INSERT INTO UserProfile (Email, Username) VALUES (@0,@1)", email, username);
 
-
-    //            db.Execute("INSERT INTO UserProfile (Username) VALUES (@0)", username);
-
-
-
-
                 var userResult = db.QuerySingle("SELECT UserId FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", email);
+                
+                // Assign the new user to "Member" role by default
                 var roleResult = db.QuerySingle("SELECT RoleId FROM webpages_Roles WHERE RoleName=@0","Member");
                 db.Execute("INSERT INTO webpages_UsersInRoles (UserId,RoleId) Values (@0,@1)", userResult.UserId,roleResult.RoleId);
+                
+                //UPLOAD IMAGE:
+                WebImage photo = null;
+                var newFileName = "";
+                var imagePath = "";
+                //if(IsPost){
+                    photo = WebImage.GetImageFromRequest();
+                    if(photo != null){
+                        newFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
+                        imagePath = @"Images\" + newFileName;
+                        photo.Save(@"~\" + imagePath);
+                    }
+                //}
+                
                 // Create and associate a new entry in the membership database.
                 // If successful, continue processing the request
                 try {
@@ -121,35 +128,13 @@
                     ModelState.AddFormError(e.Message);
                 }
             } else {
-                // User already exists
+                // User already exists in db
                 ModelState.AddFormError("Email or username address is already in use.");
 
-
-
-
-
-
-//UPLOAD IMAGE:
-
-
-WebImage photo = null;
- var newFileName = "";
- var imagePath = "";
- if(IsPost){
- photo = WebImage.GetImageFromRequest();
- if(photo != null){
- newFileName = Guid.NewGuid().ToString() + "_" +
- Path.GetFileName(photo.FileName);
- imagePath = @"Images\" + newFileName;
- photo.Save(@"~\" + imagePath);
- }
- }
-
-
- 
-        }
-    }
-}
+                
+            }
+        }       //end Validation(IsValid)
+    }       // END If(IsPost)
 
 }
 
