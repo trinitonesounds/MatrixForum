@@ -26,3 +26,7 @@ Random List of Todo's
     - MemberSince isn't in the assignment, but I think it's good info to have on the Admin page
 Admin Page Charts
     - Decide which 3 to show...
+
+Member Page
+    - Page title display the currently logged in user
+    - 

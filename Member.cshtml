@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    // TODO: Page title display the currently logged in user
+    Page.Title = " Member Page";
+    if (!User.IsInRole("Member")) {
+        Response.Redirect("~/404");
+    }
+    var db = Database.Open("StarterSite");
+       
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <p>What are you doing?</p>
+        <textarea>
+        </textarea>
+    </body>
+</html>
