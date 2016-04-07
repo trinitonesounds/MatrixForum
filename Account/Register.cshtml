@@ -21,7 +21,9 @@
     var email = "";
     var password = "";
     var confirmPassword = "";
-
+    WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
 
     // Setup validation
     Validation.RequireField("username", "You must specify a username.");
@@ -52,8 +54,7 @@
 
 
         username = Request.Form["username"];
-
-
+        photo = WebImage.GetImageFromRequest();
         email = Request.Form["email"];
         password = Request.Form["password"];
         confirmPassword = Request.Form["confirmPassword"];
@@ -77,7 +78,7 @@
             //EMAIL AND USERNAME AND IMAGE
 
             if (user == null && userName == null) {
-                // Insert email and username into the profile table
+                // Insert email, photo and username into the profile table
                 db.Execute("INSERT INTO UserProfile (Email, Username) VALUES (@0,@1)", email, username);
 
                 var userResult = db.QuerySingle("SELECT UserId FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", email);
@@ -87,11 +88,9 @@
                 db.Execute("INSERT INTO webpages_UsersInRoles (UserId,RoleId) Values (@0,@1)", userResult.UserId,roleResult.RoleId);
                 
                 //UPLOAD IMAGE:
-                WebImage photo = null;
-                var newFileName = "";
-                var imagePath = "";
+                
                 //if(IsPost){
-                    photo = WebImage.GetImageFromRequest();
+                    
                     if(photo != null){
                         newFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
                         imagePath = @"Images\" + newFileName;
@@ -144,7 +143,7 @@
     <h2>Create a new account.</h2>
 </hgroup>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     @AntiForgery.GetHtml()
     @* If at least one validation error exists, notify the user *@
     @Html.ValidationSummary("Account creation was unsuccessful. Please correct the errors and try again.", excludeFieldErrors: true, htmlAttributes: null)
@@ -193,24 +192,27 @@
                 @Html.ValidationMessage("recaptcha")
                 *@
             </li>
+            <li class="image-upload">   <!--TODO: CSS Style: class and id-->
+                <label for="Image">Image</label>
+                @* TODO: Validation like previous entries?  Also value="" field *@
+                <input type="file" id="Image" name="Image" /> <br/>
+            </li>
         </ol>
 
 
-
 <!--Upload Image-->
+<!-- TODO: CSS Cleanup-->
+        @*
         <form action="" method="post" enctype="multipart/form-data">
- <fieldset>
- <legend> Upload Image </legend>
- <label for="Image">Image</label>
- <input type="file" name="Image" />
- <br/>
- <input type="submit" value="Upload" />
- </fieldset>
- </form>
+            <fieldset>
+                <legend> Upload Image </legend>
+                
+                <input type="submit" value="Upload" />
+            </fieldset>
+        </form>
 
-
-
-<br><br>
+        <br><br>
+*@
         <input type="submit" value="Register" />
     </fieldset>
 </form>
