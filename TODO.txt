@@ -1,0 +1,12 @@
+
+Random List of Todo's
+=====================
+
+ - CSS Style: class and id styling of Profile picture upload
+ - Image file validation like previous entries?  Also value="" field 
+ - Does the profile picture need a different filename choice?  Maybe based on the upload time.
+ - Default image needs to be set if photo==null
+    - database will automatically assign DefaultProfilePicture.jpg if the field is empty.
+    - My guess is that the DB INSERT item should have newFileName==null  (not tested)
+ - Captcha Setup
+ -      

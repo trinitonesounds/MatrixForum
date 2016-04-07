@@ -73,13 +73,24 @@
             var user = db.QuerySingle("SELECT Email FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", email);
 
             //Check if Username already exists
-            var userName = db.QuerySingle("SELECT Username FROM UserProfile WHERE LOWER(Username) = LOWER(@0)", username); //@2 = out of range error...but theres 3 columns in that DB...??
+            var userName = db.QuerySingle("SELECT Username FROM UserProfile WHERE LOWER(Username) = LOWER(@0)", username); 
 
             //EMAIL AND USERNAME AND IMAGE
 
             if (user == null && userName == null) {
+                //UPLOAD IMAGE:
+                if(photo != null){
+                    // TODO: Better filename choice??
+                    newFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
+                    imagePath = @"Images\" + newFileName;
+                    photo.Save(@"~\" + imagePath);
+
+                }
+                // TODO: Default image needs to be set if photo==null
+
+
                 // Insert email, photo and username into the profile table
-                db.Execute("INSERT INTO UserProfile (Email, Username) VALUES (@0,@1)", email, username);
+                db.Execute("INSERT INTO UserProfile (Email, Username, Picture) VALUES (@0,@1,@2)", email, username, newFileName);
 
                 var userResult = db.QuerySingle("SELECT UserId FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", email);
                 
@@ -87,16 +98,7 @@
                 var roleResult = db.QuerySingle("SELECT RoleId FROM webpages_Roles WHERE RoleName=@0","Member");
                 db.Execute("INSERT INTO webpages_UsersInRoles (UserId,RoleId) Values (@0,@1)", userResult.UserId,roleResult.RoleId);
                 
-                //UPLOAD IMAGE:
                 
-                //if(IsPost){
-                    
-                    if(photo != null){
-                        newFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
-                        imagePath = @"Images\" + newFileName;
-                        photo.Save(@"~\" + imagePath);
-                    }
-                //}
                 
                 // Create and associate a new entry in the membership database.
                 // If successful, continue processing the request
@@ -177,6 +179,7 @@
                 @* Write any password validation errors to the page *@
                 @Html.ValidationMessage("confirmPassword")
             </li>
+            <!-- TODO: Captcha SETUP -->
             <li class="recaptcha">
                 <div class="message-info">
                     <p>
@@ -198,21 +201,7 @@
                 <input type="file" id="Image" name="Image" /> <br/>
             </li>
         </ol>
-
-
-<!--Upload Image-->
-<!-- TODO: CSS Cleanup-->
-        @*
-        <form action="" method="post" enctype="multipart/form-data">
-            <fieldset>
-                <legend> Upload Image </legend>
-                
-                <input type="submit" value="Upload" />
-            </fieldset>
-        </form>
-
-        <br><br>
-*@
+        
         <input type="submit" value="Register" />
     </fieldset>
 </form>

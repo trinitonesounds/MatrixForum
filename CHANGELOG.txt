@@ -1,0 +1,6 @@
+Changelog:
+
+- initial upload
+- initial photo upload code
+- code cleanup and fix photo uploads to folder
+- Add column to UserProfile database that stores the filename of the Profile picture
