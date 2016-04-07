@@ -15,3 +15,8 @@ Notes from Curtis:
 - I've been adding TODO notes to the code as I go so I don't forget about doing something later.
   Feel free to add some as you go as well.
 
+- The basic framework for the Admin page is there, but it's not in the format of the assignment
+  See the TODO's
+
+- I just noticed that there's a User Admin page called Manage which we can reformat for the 
+  Forum
