@@ -14,6 +14,7 @@ Register Page
     - database will automatically assign DefaultProfilePicture.jpg if the field is empty.
     - My guess is that the DB INSERT item should have newFileName==null  (not tested)
  - Captcha Setup
+ - Check for duplicate username (I see code but not yet tested)
  
  Admin Page
     - Edit user from Admin Page Errors (It was copied from EditProduct)
