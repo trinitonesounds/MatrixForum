@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    // TODO: Page title display the currently logged in user
+    Page.Title = " Member Page";
+    if (!User.IsInRole("Member") && (!User.IsInRole("Admin"))) {
+        Response.Redirect("~/404");
+    }
+    var db = Database.Open("StarterSite");
+
+
+    //Pull Picture from database
+    var username = @WebSecurity.CurrentUserName;
+    var profileImage = db.QuerySingle("SELECT Picture FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
+
+
+    //Member Since
+    var memberSince = db.QuerySingle("SELECT MemberSince FROM UserProfile Where LOWER(Email) = Lower(@0)", username);
+
+
+    //Posts
+    var post=Request["post"];
+
+            var insertQuery="INSERT INTO UserProfile (Posts)"+"VALUES (@0)";
+            db.Execute(insertQuery, post);               
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+
+        <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@WebSecurity.CurrentUserName</a>!</h1>
+        <p>Member Since: @memberSince</p>
+        <br><br>
+
+        <img src="~/Images/@profileImage" alt="profImg" width="300px"> 
+        <br><br>
+
+        <form method="POST" action="" >
+        <fieldset>
+         <div>
+         <label for="post">What are you doing?</label>
+        <input type="text" name="post" value="@Request["post"]" />
+        </div>
+
+        <input type="submit" value="Submit" class="submit" />
+        </fieldset>
+        </form>
+        
+
+    </body>
+</html>

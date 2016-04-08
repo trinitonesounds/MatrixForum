@@ -1,0 +1,30 @@
+Changelog:
+
+- initial upload
+- initial photo upload code
+- code cleanup and fix photo uploads to folder
+- Add column to UserProfile db: stores the filename of the Profile picture
+- Add column to UserProfile db: MemberSince
+- Register new User automatically adds currentDate to UserProfile db: MemberSince column 
+- Admin Page:
+    - Edit User link
+    - Delete User link
+    - Member Since Column
+    - Restrict access to Admin members only
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+April 7 changes (by Tom)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-Changed "Products" tab in header to "Profile", to take to Member.cshtml. 
+-Member.cshtml, line 30: added heading to say Hello, (email address)
+-Member.cshtml, line 5: added && statement to allow Admins to access Member.cshtml
+-Member.cshtml, line 12 & 13: linked Picture from UserProfile database but link is broken. 
+-Member.cshtml, line 30 & 31: Displaying memberSince column... weird text displayed ("WebMatrix.Data.DynamicRecord")
+-Created "Posts" column in User Profile table.
+-Member.cshtml, line 43 - 53: Changed form. Will now post the entered text into the Posts collumn in the UserProfile Table. But every new post creates a new user. 
+
+
+
+
