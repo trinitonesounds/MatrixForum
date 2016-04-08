@@ -15,9 +15,7 @@
     Page.Title = "Register";
 
     // Initialize general page variables
-
     var username = "";
-
     var email = "";
     var password = "";
     var confirmPassword = "";
@@ -27,8 +25,6 @@
 
     // Setup validation
     Validation.RequireField("username", "You must specify a username.");
-
-
     Validation.RequireField("email", "You must specify an email address.");
     Validation.RequireField("password", "Password cannot be blank.");
     Validation.Add("confirmPassword",
@@ -41,7 +37,7 @@
 
 
             //Username Validation
-            Validation.Add("username",
+    Validation.Add("username",
         Validator.StringLength(
             maxLength: Int32.MaxValue,
             minLength: 5,
@@ -51,7 +47,6 @@
     // If this is a POST request, validate and process data
     if (IsPost) {
         AntiForgery.Validate();
-
 
         username = Request.Form["username"];
         photo = WebImage.GetImageFromRequest();
@@ -76,7 +71,6 @@
             var userName = db.QuerySingle("SELECT Username FROM UserProfile WHERE LOWER(Username) = LOWER(@0)", username); 
 
             //EMAIL AND USERNAME AND IMAGE
-
             if (user == null && userName == null) {
                 //UPLOAD IMAGE:
                 if(photo != null){
@@ -84,7 +78,6 @@
                     newFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
                     imagePath = @"Images\" + newFileName;
                     photo.Save(@"~\" + imagePath);
-
                 }
                 // TODO: Default image needs to be set if photo==null
 
@@ -97,7 +90,6 @@
                 // Assign the new user to "Member" role by default
                 var roleResult = db.QuerySingle("SELECT RoleId FROM webpages_Roles WHERE RoleName=@0","Member");
                 db.Execute("INSERT INTO webpages_UsersInRoles (UserId,RoleId) Values (@0,@1)", userResult.UserId,roleResult.RoleId);
-                
                 
                 
                 // Create and associate a new entry in the membership database.
