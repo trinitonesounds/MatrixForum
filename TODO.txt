@@ -33,6 +33,7 @@ Admin Page Charts
     - Decide which 3 to show...
 
 Member Page
-    - Page title display the currently logged in user - LOW
+    - Page title display the currently logged in user - DONE
+    - PostFrom currently is UserId.  Needs to link to the Profile table to get the username
     - CSS Style messageTextArea
     - CSS Style postMessage

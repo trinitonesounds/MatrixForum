@@ -11,3 +11,7 @@ Changelog:
     - Delete User link
     - Member Since Column
     - Restrict access to Admin members only
+- Member Page
+    - Page title uses username
+    - Basic db query to display the forum posts
+- ForumPost Database table
