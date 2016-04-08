@@ -1,0 +1,39 @@
+
+Random List of Todo's
+=====================
+
+Register Page
+ - CSS Style: class and id styling of Profile picture upload
+ - Image file validation
+    - maximum size
+    - only jpg or png
+    - Error message when there's a problem
+    - value="" field ??
+ - Does the profile picture need a different filename choice?  Maybe based on the upload time.
+ - Default image needs to be set if photo==null
+    - database will automatically assign DefaultProfilePicture.jpg if the field is empty.
+    - My guess is that the DB INSERT item should have newFileName==null  (not tested)
+ - Captcha Setup
+ 
+ Admin Page
+    - Edit user from Admin Page Errors (It was copied from EditProduct)
+        - What will it edit
+            - Password?
+            - Profile Picture?
+            - Email address?
+        - Restrict to authenticated Admin
+    - Delete user Works, but isn't in the format required by the assignment
+      - Needs Profile Picture
+      - CSS Layout
+    - Needs Profile Picture
+    - Needs Username
+    - Remove UserID
+    - MemberSince isn't in the assignment, but I think it's good info to have on the Admin page
+Admin Page Charts
+    - Decide which 3 to show...
+
+Member Page
+    - Page title display the currently logged in user - DONE
+    - PostFrom currently is UserId.  Needs to link to the Profile table to get the username
+    - CSS Style messageTextArea
+    - CSS Style postMessage

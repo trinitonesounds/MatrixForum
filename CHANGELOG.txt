@@ -1,0 +1,17 @@
+Changelog:
+
+- initial upload
+- initial photo upload code
+- code cleanup and fix photo uploads to folder
+- Add column to UserProfile db: stores the filename of the Profile picture
+- Add column to UserProfile db: MemberSince
+- Register new User automatically adds currentDate to UserProfile db: MemberSince column 
+- Admin Page:
+    - Edit User link
+    - Delete User link
+    - Member Since Column
+    - Restrict access to Admin members only
+- Member Page
+    - Page title uses username
+    - Basic db query to display the forum posts
+- ForumPost Database table
