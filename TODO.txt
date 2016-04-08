@@ -2,8 +2,13 @@
 Random List of Todo's
 =====================
 
+Register Page
  - CSS Style: class and id styling of Profile picture upload
- - Image file validation like previous entries?  Also value="" field 
+ - Image file validation
+    - maximum size
+    - only jpg or png
+    - Error message when there's a problem
+    - value="" field ??
  - Does the profile picture need a different filename choice?  Maybe based on the upload time.
  - Default image needs to be set if photo==null
     - database will automatically assign DefaultProfilePicture.jpg if the field is empty.
@@ -28,5 +33,6 @@ Admin Page Charts
     - Decide which 3 to show...
 
 Member Page
-    - Page title display the currently logged in user
-    - 
+    - Page title display the currently logged in user - LOW
+    - CSS Style messageTextArea
+    - CSS Style postMessage
