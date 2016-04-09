@@ -15,3 +15,16 @@ Changelog:
     - Page title uses username
     - Basic db query to display the forum posts
 - ForumPost Database table
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+April 7 changes (by Tom)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-Changed "Products" tab in header to "Profile", to take to Member.cshtml. 
+-Member.cshtml, line 30: added heading to say Hello, (email address)
+-Member.cshtml, line 5: added && statement to allow Admins to access Member.cshtml
+-Member.cshtml, line 12 & 13: linked Picture from UserProfile database but link is broken. 
+-Member.cshtml, line 30 & 31: Displaying memberSince column... weird text displayed ("WebMatrix.Data.DynamicRecord")
+-Created "Posts" column in User Profile table.
+-Member.cshtml, line 43 - 53: Changed form. Will now post the entered text into the Posts collumn in the UserProfile Table. But every new post creates a new user. 
+

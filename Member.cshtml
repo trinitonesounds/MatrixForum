@@ -1,28 +1,40 @@
 ﻿@{
-   //WebSecurity.RequireAuthenticatedUser();
+    //WebSecurity.RequireAuthenticatedUser();
 
-   if (!WebSecurity.IsAuthenticated) {
-       Response.Redirect("~/Account/Login?returnUrl=" + Request.Url.LocalPath);
-   }
+    if (!WebSecurity.IsAuthenticated) {
+        Response.Redirect("~/Account/Login?returnUrl=" + Request.Url.LocalPath);
+    }
 
-   Layout = "~/_SiteLayout.cshtml";
-   if ((!User.IsInRole("Member")) || (!User.IsInRole("Admin"))) {
+    Layout = "~/_SiteLayout.cshtml";
+    if ((!User.IsInRole("Member")) || (!User.IsInRole("Admin"))) {
         Response.Redirect("~/404");
-   }
+    }
    
-   Page.Title = WebSecurity.CurrentUserName + " Membership Page";
+    Page.Title = WebSecurity.CurrentUserName + " Membership Page";
     
-   var db = Database.Open("StarterSite");
-   var selectQueryString="SELECT * FROM ForumPosts ORDER BY PostDate DESC";
+    var db = Database.Open("StarterSite");
+    var selectQueryString="SELECT * FROM ForumPosts ORDER BY PostDate DESC";
 
 
-   //Variables for Forum Posts
-   var userId = WebSecurity.CurrentUserId;
-   var newPost = Request["messageTextArea"];
-   //var row = db.QuerySingle(selectQueryString,PostId);
+    //Variables for Forum Posts
+    var userId = WebSecurity.CurrentUserId;
+    var newPost = Request["messageTextArea"];
+    //var row = db.QuerySingle(selectQueryString,PostId);
      
-   
-   
+    //Pull Picture from database  TODO: picture link not working
+    var username = @WebSecurity.CurrentUserName;
+    var profileImage = db.QuerySingle("SELECT Picture FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
+
+    //Member Since
+    var memberSince = db.QuerySingle("SELECT MemberSince FROM UserProfile Where LOWER(Email) = Lower(@0)", username);
+
+
+    //Posts
+    var post=Request["post"];
+
+    var insertQuery="INSERT INTO UserProfile (Posts)" + "VALUES (@0)";
+    db.Execute(insertQuery, post);               
+
 }
 
 <!DOCTYPE html>
@@ -33,10 +45,19 @@
         <title></title>
     </head>
     <body>
-        <p>Current UserId = @userId</p>
+
+        <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@WebSecurity.CurrentUserName</a>!</h1>
+        <p>Member Since: @memberSince</p>
+        <br><br>
+
+        <img src="~/Images/@profileImage" alt="profImg" width="300px"> 
+        <br><br>
+        <p>Current UserId = @userId</p>   <!-- debug test -->
+        <p>Current UserName = @username</p>
+
         <p>What are you doing?</p>
-        <form action="POST" >
-            <textarea class="messageTextArea" name="messageTextArea"></textarea>
+        <form method="post" action="" >
+            <textarea class="messageTextArea" name="messageTextArea">@Request["post"]</textarea>
             <input class="postMessage" type="submit" value="Post Message" />
         </form>
         
@@ -48,7 +69,7 @@
             @foreach(var row in db.Query(selectQueryString)) {
                 <tr>
                     <td>Post picture</td>
-                    <td>@row.PostFrom</td>  <!-- TODO: link to the username... -->
+                    <td>@row.PostFrom</td>  <!-- TODO: get the username from the UserProfile table... -->
                     <td>@row.PostMessage</td>
                     <td>@row.PostDate</td>
                 </tr>
