@@ -1,4 +1,5 @@
 ﻿@{
+    
     //WebSecurity.RequireAuthenticatedUser();
 
     if (!WebSecurity.IsAuthenticated) {
@@ -19,23 +20,29 @@
     //Variables for Forum Posts
     var userId = WebSecurity.CurrentUserId;
     var newPost = Request["messageTextArea"];
-    //var row = db.QuerySingle(selectQueryString,PostId);
-     
+
     //Pull Picture from database  TODO: picture link not working
     var username = @WebSecurity.CurrentUserName;
     var profileImage = db.QuerySingle("SELECT Picture FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
 
     //Member Since
     var memberSince = db.QuerySingle("SELECT MemberSince FROM UserProfile Where LOWER(Email) = Lower(@0)", username);
-
-
+    
     //Posts
-    var post=Request["post"];
-
-    var insertQuery="INSERT INTO UserProfile (Posts)" + "VALUES (@0)";
-    db.Execute(insertQuery, post);               
-
+    if (IsPost) { 
+        newPost = Request["messageTextArea"];
+        if (newPost.IsEmpty())
+            ModelState.AddError("messageTextArea","Message text required");
+         
+        //TODO: Add error message.  See InsertProducts.cshtml for example
+        if (ModelState.IsValid) {
+            var insertQuery = "INSERT INTO ForumPosts (PostMessage,PostFrom) VALUES (@0,@1)";
+            db.Execute(insertQuery, newPost, userId);
+            //Response.Redirect(@Href("~/Member"));       <!--  not sure if this is needed -->
+       }
+    }
 }
+
 
 <!DOCTYPE html>
 
@@ -57,7 +64,7 @@
 
         <p>What are you doing?</p>
         <form method="post" action="" >
-            <textarea class="messageTextArea" name="messageTextArea">@Request["post"]</textarea>
+            <textarea class="messageTextArea" name="messageTextArea">@Request["messageTextArea"]</textarea>
             <input class="postMessage" type="submit" value="Post Message" />
         </form>
         
@@ -68,7 +75,7 @@
         <tbody>
             @foreach(var row in db.Query(selectQueryString)) {
                 <tr>
-                    <td>Post picture</td>
+                    <td>picture placeholder</td>
                     <td>@row.PostFrom</td>  <!-- TODO: get the username from the UserProfile table... -->
                     <td>@row.PostMessage</td>
                     <td>@row.PostDate</td>
@@ -79,3 +86,4 @@
 
     </body>
 </html>
+2

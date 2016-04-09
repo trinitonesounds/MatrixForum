@@ -36,5 +36,6 @@ Admin Page Charts
 Member Page
     - Page title display the currently logged in user - DONE
     - PostFrom currently is UserId.  Needs to link to the Profile table to get the username
+    - Add error message.  See InsertProducts.cshtml for example
     - CSS Style messageTextArea
     - CSS Style postMessage
