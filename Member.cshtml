@@ -29,18 +29,19 @@
     var memberSince = db.QuerySingle("SELECT MemberSince FROM UserProfile Where LOWER(Email) = Lower(@0)", username);
     
     //Posts
-    if (IsPost) { 
+  /*  if (IsPost) { 
         newPost = Request["messageTextArea"];
-        if (newPost.IsEmpty())
+        //TODO: Add error message.  See InsertProducts.cshtml for example
+        /*if (newPost.IsEmpty())
             ModelState.AddError("messageTextArea","Message text required");
          
-        //TODO: Add error message.  See InsertProducts.cshtml for example
+        
         if (ModelState.IsValid) {
             var insertQuery = "INSERT INTO ForumPosts (PostMessage,PostFrom) VALUES (@0,@1)";
             db.Execute(insertQuery, newPost, userId);
             //Response.Redirect(@Href("~/Member"));       <!--  not sure if this is needed -->
        }
-    }
+    }*/
 }
 
 
@@ -64,7 +65,7 @@
 
         <p>What are you doing?</p>
         <form method="post" action="" >
-            <textarea class="messageTextArea" name="messageTextArea">@Request["messageTextArea"]</textarea>
+            <textarea class="messageTextArea" name="messageTextArea"></textarea>
             <input class="postMessage" type="submit" value="Post Message" />
         </form>
         
@@ -86,4 +87,3 @@
 
     </body>
 </html>
-2
