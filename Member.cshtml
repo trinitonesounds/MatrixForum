@@ -12,13 +12,16 @@
     Page.Title = WebSecurity.CurrentUserName + " Membership Page";
 
     var db = Database.Open("StarterSite");
-    var forumQueryString = "SELECT * FROM ForumPosts ORDER BY PostDate DESC";
+    var forumQueryString = "SELECT * " +
+                           "FROM ForumPosts, UserProfile " +
+                           "WHERE UserProfile.UserId=ForumPosts.PostFrom " +
+                           "ORDER BY PostDate DESC";
 
     //Variables for Forum Posts
     var userId = WebSecurity.CurrentUserId;
     var newPost = Request["messageTextArea"];
     
-    //Pull Picture from database  TODO: picture link not working
+    //Pull Picture from database
     var username = WebSecurity.CurrentUserName;
     var profileImage = db.QuerySingle("SELECT Picture FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
 
