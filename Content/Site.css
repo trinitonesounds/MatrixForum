@@ -757,3 +757,13 @@ tr.pager td {
 .red{
     color: red;
 }
+
+
+
+.tableBackground {
+    background-color: #a6dbed;
+    padding-left: 15px;
+    margin-bottom: 10px;
+    box-shadow: 10px 10px 5px #888888;
+  
+}

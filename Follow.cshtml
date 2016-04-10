@@ -8,14 +8,30 @@
     if ((!User.IsInRole("Member")) && (!User.IsInRole("Admin"))) {
         Response.Redirect("~/Account/Login");
     }
+
+
+
    
     Page.Title = "Forum Membership Page";
 
     var db = Database.Open("StarterSite");
+
+
+
+
+        //For Follow: 
+    var userID=UrlData[0];
+    var currentUser = WebSecurity.CurrentUserName;
+
+
+
+
+
     var forumQueryString = "SELECT * " +
                            "FROM ForumPosts, UserProfile " +
-                           "WHERE UserProfile.UserId=ForumPosts.PostFrom " +
+                           "WHERE ForumPosts.PostFrom =@0 " +
                            "ORDER BY PostDate DESC";
+
 
     //Variables for Forum Posts
     var userId = WebSecurity.CurrentUserId;
@@ -27,7 +43,6 @@
 
     //Member Since
     var memberSince = db.QuerySingle("SELECT MemberSince FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
-
     
     // Post message into ForumPosts table
     if (IsPost) {
@@ -43,13 +58,10 @@
 
 
 
-//Focus Script
-    <script>
-function getfocus() {
-    document.getElementById("messageTextArea").focus();
-}
-</script>
 
+    var a=1; 
+    var b=2; 
+    var test= db.QuerySingle("SELECT PostFrom FROM ForumPosts");
 }
 
 <!DOCTYPE html>
@@ -60,7 +72,7 @@ function getfocus() {
     <title></title>
 </head>
 
-<body onload="getfocus()">
+<body>
 
     <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@currentUserProfile.Username</a>!</h1>
     <p>Member Since: @memberSince.MemberSince</p>
@@ -79,7 +91,7 @@ function getfocus() {
         
     <p>What are you doing?</p>
     <form method="post" action="" >
-        <textarea class="messageTextArea" id="messageTextArea" name="messageTextArea"></textarea>
+        <textarea class="messageTextArea" name="messageTextArea"></textarea>
         <input class="postMessage" type="submit" value="Post Message" />
     </form>
         
@@ -88,23 +100,35 @@ function getfocus() {
     <!-- Message Posts below -->
     <!-- I used a table for now, just to get the data displaying.  
             TODO: reformat the messages. -->
-    <table border="1">
-    <tbody >
-        @foreach(var row in db.Query(forumQueryString)) {
-            <tr >
-                <td><img src="~/Images/@row.Picture" alt="@username" width="100px"> </td>
-                <td class="tableBackground">@row.Username </td>
-                <td class="tableBackground">@row.PostMessage </td>
-                <td class="tableBackground">@row.PostDate </td>
-                <td class="tableBackground"><a href="@Href("~/Follow",row.PostFrom)">follow</a></td>
 
+
+   <!--Testing URLData-->
+        <p>Total number of items in UrlData: @UrlData.Count</p>
+        <ul>
+    @for(var i = 0; i < UrlData.Count; i++){
+        <li>UrlData[@i]: @UrlData[i]</li>
+}
+        <li>ForumPosts.PostFrom: @test.PostFrom</li>
+        </ul>
+
+
+
+    <table border="1">
+    <tbody>
+        @foreach(var row in db.Query(forumQueryString, userID)) {
+        
+              <tr>
+                <td><img src="~/Images/@row.Picture" alt="@username" width="100px"> </td>
+                <td>@row.Username </td>
+                <td>@row.PostMessage </td>
+                <td>@row.PostDate </td>
             </tr>
             
         }
     </tbody>
     </table>
     
-    
+
 
 </body>
 </html>

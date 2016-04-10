@@ -39,3 +39,18 @@ Member Page
     - allows <script>alert("This is a test")</script> but .NET catches it as "suspicious".
     - CSS Style messageTextArea
     - CSS Style postMessage
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Tom April 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-Include Email confirmation for registration (5 marks)
+
+-Publish website so we can register for reCaptcha keys. An alternative could be to just add an "I am not a robot" checkbox. 
+
+-Need "most followed" and "most active contributor" links.
+
+-Create 2 seperate Admin pages for Manage Users (what we currently have) and Main Page (just to show the charts)
+
+
+
