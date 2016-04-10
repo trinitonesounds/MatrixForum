@@ -4,22 +4,24 @@
     if (!User.IsInRole("Admin")) {
         Response.Redirect("~/404");
     }
+
     var db = Database.Open("StarterSite");
     var selectQuery="SELECT * FROM UserProfile ORDER BY MemberSince DESC";
+    
+    // Session Variables - Not sure if we're going to use these yet.  Maybey use something
+    // like this for the "Most Followed"
     Session["Test"]="Testing Session Variables";
     var myInfo = new List<string>{WebSecurity.CurrentUserName,DateTime.Now.ToLongDateString()};
     Session["Info"]=myInfo;
     AppState["MyApplication"]="My Application Variable";
+    
+    
     var roleQuery="SELECT * " +
                 "FROM UserProfile, webpages_UsersInRoles, webpages_Roles " +
-                "WHERE UserProfile.UserId=webpages_UsersInRoles.UserId AND webpages_UsersInRoles.RoleId=webpages_Roles.RoleId " +
+                "WHERE UserProfile.UserId=webpages_UsersInRoles.UserId " + 
+                "AND webpages_UsersInRoles.RoleId=webpages_Roles.RoleId " +
                 "ORDER BY UserProfile.UserId ASC";
-
-
-
-
-
-    
+                    
 }
 
 <!DOCTYPE html>
@@ -37,7 +39,7 @@
                 <tr>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
-                    <th>User ID</th>              <!-- TODO: Normally the ID is not displayed. Remove? -->
+                    <th>Username</th>
                     <th>Email</th>
                     <th>Member Since</th>
                     <th>Role</th>
@@ -55,7 +57,7 @@
                     <td><a href="@Href("~/UpdateUser",row.UserID)">Edit</a></td>
                     <!-- TODO: Delete user Works, but isn't in the format required by the assignment -->
                     <td><a href="@Href("~/DeleteUser",row.UserId)">Delete</a></td>
-                    <td>@row.UserId</td>
+                    <td>@row.Username</td>
                     <td>@row.Email</td>
                     <td>@row.MemberSince</td>
                     <td>@row.RoleName</td>

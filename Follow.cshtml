@@ -2,34 +2,23 @@
     if (!WebSecurity.IsAuthenticated) {
         Response.Redirect("~/Account/Login?returnUrl=" + Request.Url.LocalPath);
     }
-
-    Layout = "~/_SiteLayout.cshtml";
-
     if ((!User.IsInRole("Member")) && (!User.IsInRole("Admin"))) {
         Response.Redirect("~/Account/Login");
     }
-
-
-
-   
+    Layout = "~/_SiteLayout.cshtml";
     Page.Title = "Forum Membership Page";
 
+    
     var db = Database.Open("StarterSite");
 
-
-
-
-        //For Follow: 
-    var userID=UrlData[0];
-    var currentUser = WebSecurity.CurrentUserName;
-
-
-
-
-
+    //Get who we're following from the URL 
+    var followID=UrlData[0];
+    
+    // Query the db filtering the followID
     var forumQueryString = "SELECT * " +
                            "FROM ForumPosts, UserProfile " +
-                           "WHERE ForumPosts.PostFrom =@0 " +
+                           "WHERE ForumPosts.PostFrom = (@0)" +
+                           "AND ForumPosts.PostFrom = UserProfile.UserId " +
                            "ORDER BY PostDate DESC";
 
 
@@ -57,11 +46,9 @@
     }
 
 
-
-
-    var a=1; 
-    var b=2; 
-    var test= db.QuerySingle("SELECT PostFrom FROM ForumPosts");
+    //var a=1; 
+    //var b=2; 
+    //var test= db.QuerySingle("SELECT PostFrom FROM ForumPosts");
 }
 
 <!DOCTYPE html>
@@ -75,19 +62,20 @@
 <body>
 
     <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@currentUserProfile.Username</a>!</h1>
-    <p>Member Since: @memberSince.MemberSince</p>
+    <p>Member since: @memberSince.MemberSince</p>
     <br><br>
 
     <img src="~/Images/@currentUserProfile.Picture" alt="profImg" width="300px"> 
     <br><br>
         
     <!-- debug test code
-    
     <p>Current UserId = @userId</p>
     <p>Current UserName = @username</p>
     <p>profile image: @currentUserProfile.Picture</p>
+    <p>followID = @followID</p>
+    -->
     
-     -->
+     
         
     <p>What are you doing?</p>
     <form method="post" action="" >
@@ -97,25 +85,24 @@
         
     @Html.ValidationSummary("Error with your submission")
 
+    
+    @*Testing URLData
+    <p>Total number of items in UrlData: @UrlData.Count</p>
+    <ul>
+    @for(var i = 0; i < UrlData.Count; i++){
+        <li>UrlData[@i]: @UrlData[i]</li>
+    }
+    <li>ForumPosts.PostFrom: @test.PostFrom</li>
+    </ul>
+    *@
+
     <!-- Message Posts below -->
     <!-- I used a table for now, just to get the data displaying.  
             TODO: reformat the messages. -->
-
-
-   <!--Testing URLData-->
-        <p>Total number of items in UrlData: @UrlData.Count</p>
-        <ul>
-    @for(var i = 0; i < UrlData.Count; i++){
-        <li>UrlData[@i]: @UrlData[i]</li>
-}
-        <li>ForumPosts.PostFrom: @test.PostFrom</li>
-        </ul>
-
-
-
     <table border="1">
     <tbody>
-        @foreach(var row in db.Query(forumQueryString, userID)) {
+        
+        @foreach(var row in db.Query(forumQueryString, followID)) {
         
               <tr>
                 <td><img src="~/Images/@row.Picture" alt="@username" width="100px"> </td>
@@ -125,10 +112,10 @@
             </tr>
             
         }
+        
     </tbody>
     </table>
     
-
 
 </body>
 </html>

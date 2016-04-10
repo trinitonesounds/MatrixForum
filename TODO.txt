@@ -16,30 +16,41 @@ Register Page
  - Captcha Setup
  - Check for duplicate username (I see code but not yet tested)
  
- Admin Page
+ Admin Page - Users
     - Edit user from Admin Page Errors (It was copied from EditProduct)
+        See the "Manage" page for changing password, etc.
         - What will it edit
-            - Password?
-            - Profile Picture?
-            - Email address?
-        - Restrict to authenticated Admin
+            - Password
+            - Profile Picture
+            - Email address
+
+Admin Page - Charts
+    - Decide which 3 to show...
+
+Delete User Page
     - Delete user Works, but isn't in the format required by the assignment
       - Needs Profile Picture
       - CSS Layout
-    - Needs Profile Picture
-    - Needs Username
-    - Remove UserID
-    - MemberSince isn't in the assignment, but I think it's good info to have on the Admin page
-Admin Page Charts
-    - Decide which 3 to show...
 
 Member Page
     - Display only the latest 5 Posts
         See page 92 in the text for "Paging through Data" -- might help
+    - Decide how to track "Most Followed"
+        Session Variables?
+        Query the db on each page load (most likely)
+    - Add Aside
     - allows <script>alert("This is a test")</script> but .NET catches it as "suspicious".
     - CSS Style messageTextArea
     - CSS Style postMessage
 
+Aside
+    - See the "About" page for how the Aside is coded.
+    - Most Followed
+    - Most Active
+        
+
+Follow Page
+    - Display only the latest 5 Posts
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Tom April 10
