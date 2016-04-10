@@ -34,7 +34,8 @@ Admin Page Charts
     - Decide which 3 to show...
 
 Member Page
-    - Page title display the currently logged in user - It displays the email address (WebSecurity.CurrentUserName)
+    - Display only the latest 5 Posts
+        See page 92 in the text for "Paging through Data" -- might help
     - automatically place the cursor on messageTextArea
     - allows <script>alert("This is a test")</script> but .NET catches it as "suspicious".
     - CSS Style messageTextArea
