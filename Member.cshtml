@@ -42,14 +42,6 @@
     }
 
 
-
-//Focus Script
-    <script>
-function getfocus() {
-    document.getElementById("messageTextArea").focus();
-}
-</script>
-
 }
 
 <!DOCTYPE html>
@@ -60,7 +52,7 @@ function getfocus() {
     <title></title>
 </head>
 
-<body onload="getfocus()">
+<body>
 
     <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@currentUserProfile.Username</a>!</h1>
     <p>Member Since: @memberSince.MemberSince</p>
@@ -79,7 +71,7 @@ function getfocus() {
         
     <p>What are you doing?</p>
     <form method="post" action="" >
-        <textarea class="messageTextArea" id="messageTextArea" name="messageTextArea"></textarea>
+        <textarea class="messageTextArea" id="messageTextArea" name="messageTextArea" autofocus></textarea>
         <input class="postMessage" type="submit" value="Post Message" />
     </form>
         
