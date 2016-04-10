@@ -1,49 +1,42 @@
 ﻿@{
-    
-    //WebSecurity.RequireAuthenticatedUser();
-
     if (!WebSecurity.IsAuthenticated) {
         Response.Redirect("~/Account/Login?returnUrl=" + Request.Url.LocalPath);
     }
 
     Layout = "~/_SiteLayout.cshtml";
+
     if ((!User.IsInRole("Member")) || (!User.IsInRole("Admin"))) {
-        Response.Redirect("~/404");
+        Response.Redirect("~/Account/Login");
     }
    
     Page.Title = WebSecurity.CurrentUserName + " Membership Page";
-    
-    var db = Database.Open("StarterSite");
-    var selectQueryString="SELECT * FROM ForumPosts ORDER BY PostDate DESC";
 
+    var db = Database.Open("StarterSite");
+    var forumQueryString = "SELECT * FROM ForumPosts ORDER BY PostDate DESC";
 
     //Variables for Forum Posts
     var userId = WebSecurity.CurrentUserId;
     var newPost = Request["messageTextArea"];
-
+    
     //Pull Picture from database  TODO: picture link not working
-    var username = @WebSecurity.CurrentUserName;
+    var username = WebSecurity.CurrentUserName;
     var profileImage = db.QuerySingle("SELECT Picture FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
 
     //Member Since
-    var memberSince = db.QuerySingle("SELECT MemberSince FROM UserProfile Where LOWER(Email) = Lower(@0)", username);
+    var memberSince = db.QuerySingle("SELECT MemberSince FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
     
-    //Posts
-  /*  if (IsPost) { 
+    // Post message into ForumPosts table
+    if (IsPost) {
         newPost = Request["messageTextArea"];
-        //TODO: Add error message.  See InsertProducts.cshtml for example
-        /*if (newPost.IsEmpty())
-            ModelState.AddError("messageTextArea","Message text required");
-         
-        
+        if (String.IsNullOrWhiteSpace(newPost)) {
+            ModelState.AddError("messageTextArea","Message Text required");
+        }
         if (ModelState.IsValid) {
             var insertQuery = "INSERT INTO ForumPosts (PostMessage,PostFrom) VALUES (@0,@1)";
             db.Execute(insertQuery, newPost, userId);
-            //Response.Redirect(@Href("~/Member"));       <!--  not sure if this is needed -->
-       }
-    }*/
+        }
+    }
 }
-
 
 <!DOCTYPE html>
 
@@ -55,35 +48,42 @@
     <body>
 
         <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@WebSecurity.CurrentUserName</a>!</h1>
-        <p>Member Since: @memberSince</p>
+        <p>Member Since: @memberSince.MemberSince</p>
         <br><br>
 
-        <img src="~/Images/@profileImage" alt="profImg" width="300px"> 
+        <img src="~/Images/@profileImage.Picture" alt="profImg" width="300px"> 
         <br><br>
-        <p>Current UserId = @userId</p>   <!-- debug test -->
+        
+           <!-- debug test code -->
+        <p>Current UserId = @userId</p>
         <p>Current UserName = @username</p>
+        <p>profile image: @profileImage.Picture</p>
 
+        
         <p>What are you doing?</p>
         <form method="post" action="" >
             <textarea class="messageTextArea" name="messageTextArea"></textarea>
             <input class="postMessage" type="submit" value="Post Message" />
         </form>
         
+        @Html.ValidationSummary("Error with your submission")
+
         <!-- Message Posts below -->
         <!-- I used a table for now, just to get the data displaying.  
              TODO: reformat the messages. -->
         <table border="1">
         <tbody>
-            @foreach(var row in db.Query(selectQueryString)) {
+            @foreach(var row in db.Query(forumQueryString)) {
                 <tr>
-                    <td>picture placeholder</td>
-                    <td>@row.PostFrom</td>  <!-- TODO: get the username from the UserProfile table... -->
-                    <td>@row.PostMessage</td>
-                    <td>@row.PostDate</td>
+                    <td><img src="~/Images/@row.Picture" alt="@username" width="100px"> </td>
+                    <td>@row.PostFrom </td>  <!-- TODO: get the username from the UserProfile table... -->
+                    <td>@row.PostMessage </td>
+                    <td>@row.PostDate </td>
                 </tr>
             }
         </tbody>
         </table>
+        
 
     </body>
 </html>

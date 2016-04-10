@@ -28,3 +28,8 @@ April 7 changes (by Tom)
 -Created "Posts" column in User Profile table.
 -Member.cshtml, line 43 - 53: Changed form. Will now post the entered text into the Posts collumn in the UserProfile Table. But every new post creates a new user. 
 
+* Sat Apr 09 2016 Curtis Hildebrand <info@curtishildebrand.com> 0.0.1
+- Spent about 90 min trying to debug an error only find an errant "@" symbol.  Arghhh.
+- Member.cshtml: Added code to post messages to the ForumPosts DB table
+- Profile picture query and display is working
+- Validate text in Post as being non-empty (still needs to protect from XSS)
