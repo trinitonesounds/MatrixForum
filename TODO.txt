@@ -34,7 +34,9 @@ Admin Page Charts
     - Decide which 3 to show...
 
 Member Page
-    - Page title display the currently logged in user - DONE
+    - Page title display the currently logged in user - It displays the email address (WebSecurity.CurrentUserName)
     - PostFrom currently is UserId.  Needs to link to the Profile table to get the username
+    - automatically place the cursor on messageTextArea
+    - allows <script>alert("This is a test")</script> but .NET catches it as an error.
     - CSS Style messageTextArea
     - CSS Style postMessage
