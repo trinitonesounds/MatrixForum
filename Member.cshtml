@@ -1,4 +1,4 @@
-﻿@{
+@{
     if (!WebSecurity.IsAuthenticated) {
         Response.Redirect("~/Account/Login?returnUrl=" + Request.Url.LocalPath);
     }
@@ -55,7 +55,7 @@
 <body>
 
     <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@currentUserProfile.Username</a>!</h1>
-    <p>Member Since: @memberSince.MemberSince</p>
+    <p>Member since: @memberSince.MemberSince</p>
     <br><br>
 
     <img src="~/Images/@currentUserProfile.Picture" alt="profImg" width="300px"> 

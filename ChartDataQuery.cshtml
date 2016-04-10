@@ -1,20 +1,56 @@
 ﻿@{
     var db = Database.Open("StarterSite");
-    var data =db.Query("SELECT Product, Price FROM Product");
-    var myChart = new Chart(width:600,height:400,theme:ChartTheme.Vanilla3D);
-    myChart.AddTitle("Product Sales");
-    myChart.DataBindTable(dataSource:data,xField:"Product");
-    myChart.Write();
+    //Get the rows of UserID's into an arraw
+    var userData = db.Query("SELECT UserId FROM UserProfile");
+    var postData = db.Query("SELECT PostId FROM ForumPosts");
+    //var data =db.Query("SELECT Product, Price FROM Product");
+    
+    // convert the db query object to an array (in order to get the Length)
+    var numUsers = userData.ToArray();
+    var numPosts = postData.ToArray();
+
+    //Create the chart
+    var profilesChart = new Chart(width:800, height:600, theme:ChartTheme.Blue);
+    //var myChart = new Chart(width:600,height:400,theme:ChartTheme.Vanilla3D);
+    
+    profilesChart.AddTitle("Number of Forum Users");
+    //myChart.AddTitle("Product Sales");
+
+
+    //profilesChart.DataBindTable(dataSource:numUsers.Length, xField:data.);
+    profilesChart.AddSeries(name:"Users", 
+                            xValue:new[]{"Number of Users", "Number of Posts"}, 
+                            yValues:new[]{numUsers.Length, numPosts.Length});
+    //myChart.DataBindTable(dataSource:data,xField:"Product");
+    
+    profilesChart.Write();
+    //myChart.Write();
 }
 
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title></title>
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+
+<body>
+
+<!-- Testing output from various variables for the chart above    
+
+<p>numUsers array length: @numUsers.Length</p>
+<p>numPosts array Length: @numPosts.Length</p>
         
-    </body>
+<table>
+<tbody>
+    @foreach(var row in numUsers) {
+        <tr><td>@row.UserId</td></tr>
+    }
+</tbody>
+</table>
+
+-->
+
+</body>
 </html>
