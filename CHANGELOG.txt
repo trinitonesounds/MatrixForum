@@ -31,6 +31,9 @@ April 7 changes (by Tom)
 * Sat Apr 09 2016 Curtis Hildebrand <info@curtishildebrand.com> 0.0.1
 - Spent about 90 min trying to debug an error only find an errant "@" symbol.  Arghhh.
 - Member.cshtml: Added code to post messages to the ForumPosts DB table
-- Profile picture query and display is working
-- Validate text in Post as being non-empty (still needs to protect from XSS)
-- Forum Post profile pictures now show up.
+-   Profile picture query and display is working
+-   Validate text in Post as being non-empty (still needs to protect from XSS)
+-   Forum Post profile pictures now show up.
+-   Code formatting cleanup
+-   Follow link passing the UserId to the Follow Page
+-   Hello _username_ not userId

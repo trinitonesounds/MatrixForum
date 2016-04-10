@@ -9,7 +9,7 @@
         Response.Redirect("~/Account/Login");
     }
    
-    Page.Title = WebSecurity.CurrentUserName + " Membership Page";
+    Page.Title = "Forum Membership Page";
 
     var db = Database.Open("StarterSite");
     var forumQueryString = "SELECT * " +
@@ -23,7 +23,7 @@
     
     //Pull Picture from database
     var username = WebSecurity.CurrentUserName;
-    var profileImage = db.QuerySingle("SELECT Picture FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
+    var currentUserProfile = db.QuerySingle("SELECT Username,Picture FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
 
     //Member Since
     var memberSince = db.QuerySingle("SELECT MemberSince FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
@@ -44,49 +44,54 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title></title>
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
 
-        <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@WebSecurity.CurrentUserName</a>!</h1>
-        <p>Member Since: @memberSince.MemberSince</p>
-        <br><br>
+<body>
 
-        <img src="~/Images/@profileImage.Picture" alt="profImg" width="300px"> 
-        <br><br>
+    <h1>Hello, <a class="email" href="~/Account/Manage" title="Manage">@currentUserProfile.Username</a>!</h1>
+    <p>Member Since: @memberSince.MemberSince</p>
+    <br><br>
+
+    <img src="~/Images/@currentUserProfile.Picture" alt="profImg" width="300px"> 
+    <br><br>
         
-           <!-- debug test code -->
-        <p>Current UserId = @userId</p>
-        <p>Current UserName = @username</p>
-        <p>profile image: @profileImage.Picture</p>
-
+    <!-- debug test code
+    
+    <p>Current UserId = @userId</p>
+    <p>Current UserName = @username</p>
+    <p>profile image: @currentUserProfile.Picture</p>
+    
+     -->
         
-        <p>What are you doing?</p>
-        <form method="post" action="" >
-            <textarea class="messageTextArea" name="messageTextArea"></textarea>
-            <input class="postMessage" type="submit" value="Post Message" />
-        </form>
+    <p>What are you doing?</p>
+    <form method="post" action="" >
+        <textarea class="messageTextArea" name="messageTextArea"></textarea>
+        <input class="postMessage" type="submit" value="Post Message" />
+    </form>
         
-        @Html.ValidationSummary("Error with your submission")
+    @Html.ValidationSummary("Error with your submission")
 
-        <!-- Message Posts below -->
-        <!-- I used a table for now, just to get the data displaying.  
-             TODO: reformat the messages. -->
-        <table border="1">
-        <tbody>
-            @foreach(var row in db.Query(forumQueryString)) {
-                <tr>
-                    <td><img src="~/Images/@row.Picture" alt="@username" width="100px"> </td>
-                    <td>@row.PostFrom </td>  <!-- TODO: get the username from the UserProfile table... -->
-                    <td>@row.PostMessage </td>
-                    <td>@row.PostDate </td>
-                </tr>
-            }
-        </tbody>
-        </table>
-        
+    <!-- Message Posts below -->
+    <!-- I used a table for now, just to get the data displaying.  
+            TODO: reformat the messages. -->
+    <table border="1">
+    <tbody>
+        @foreach(var row in db.Query(forumQueryString)) {
+            <tr>
+                <td><img src="~/Images/@row.Picture" alt="@username" width="100px"> </td>
+                <td>@row.Username </td>
+                <td>@row.PostMessage </td>
+                <td>@row.PostDate </td>
+                <td><a href="@Href("~/Follow",row.PostFrom)">follow</a></td>
+            </tr>
+        }
+    </tbody>
+    </table>
+    
+    
 
-    </body>
+</body>
 </html>
