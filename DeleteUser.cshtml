@@ -20,6 +20,13 @@
         db.Execute(deleteQueryString,userID);
         Response.Redirect("~/Admin");
     }
+
+
+
+
+    var username = WebSecurity.CurrentUserName;
+    var selectedUser = db.QuerySingle("SELECT UserId,Picture FROM UserProfile WHERE UserProfile.UserId = @0", userID);
+    var selectedUsername = db.QuerySingle("SELECT Username FROM UserProfile WHERE UserProfile.UserId=@0", userID);
     
 }
 
@@ -36,7 +43,10 @@
         <form method="post" action="" name="form">
             <p>Are you sure you want to delete the following user?</p>
 
-            <p>Name: @rowUser.Email <br /> </p>
+            <img src="~/Images/@selectedUser.Picture" alt="profImg" width="300px">
+
+            <p>Email: @rowUser.Email <br /> </p>
+            <p>Username: @selectedUsername.Username <br /> </p>
             <p><input type="submit" value="Delete" /></p>
         
         </form>

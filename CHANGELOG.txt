@@ -37,3 +37,16 @@ April 7 changes (by Tom)
 -   Code formatting cleanup
 -   Follow link passing the UserId to the Follow Page
 -   Hello _username_ not userId
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+April 9/10 (Tom)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-Spent hours trying to filter the posts displyed when clicking the follow links on the member page but still no luck. 
+For some reason it looks like every post ever made is displayed. You can see in my URLDATA test above the table that
+it does select the correct userID (according to the/# in follow link) but it still doesn't filter to only those posts. 
+
+-Added Picture and Username to DeleteUser
+-Added Pictures to Admin page
+-Member page now focuses to textbox (added script at bottom of head section)
+-Added "tableBackground" class at bottom of content/themes/Site.css for posts styling.
