@@ -60,3 +60,10 @@ it does select the correct userID (according to the/# in follow link) but it sti
     - update username
     - update email
     - update picture
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+April 10 (Tom)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Added reCAPTCHA, but it looks different than in mourad's project.pdf. But i followed the instructions given so I think it will be good
+- Added Admin dropdown, just need to add links to pages
+- Published website on Azure: http://master-april10-4pm.azurewebsites.net/
