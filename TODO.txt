@@ -22,6 +22,7 @@ Register Page
         See the "Manage" page for changing password, etc.
     - When a user is an Admin, it double lists the user as a Member and an Admin
     - Validation of fields
+        http://www.asp.net/web-pages/overview/ui-layouts-and-themes/validating-user-input-in-aspnet-web-pages-sites
     - CSS Styles 
 
 Admin Page - Charts
