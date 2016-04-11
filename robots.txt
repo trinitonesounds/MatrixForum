@@ -1,0 +1,3 @@
+Disallow: [http://master-april10-4pm.azurewebsites.net/Admin]
+Disallow: [http://master-april10-4pm.azurewebsites.net/Account]
+Disallow: [http://master-april10-4pm.azurewebsites.net/App_Data]
