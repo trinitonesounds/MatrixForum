@@ -132,12 +132,17 @@
 }
 
 
+<head>
+    
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+</head>
 <hgroup class="title">
     <h1>@Page.Title.</h1>
     <h2>Create a new account.</h2>
 </hgroup>
 
-<form method="post" enctype="multipart/form-data">
+<form style="margin-left: 25px" method="post" enctype="multipart/form-data" >
     @AntiForgery.GetHtml()
     @* If at least one validation error exists, notify the user *@
     @Html.ValidationSummary("Account creation was unsuccessful. Please correct the errors and try again.", excludeFieldErrors: true, htmlAttributes: null)
@@ -173,19 +178,16 @@
             </li>
             <!-- TODO: Captcha SETUP -->
             <li class="recaptcha">
-                <div class="message-info">
-                    <p>
-                        To enable CAPTCHA verification, <a href="http://go.microsoft.com/fwlink/?LinkId=204140">install the 
-                        ASP.NET Web Helpers Library</a> and uncomment ReCaptcha.GetHtml and replace 'PUBLIC_KEY'
-                        with your public key. At the top of this page, uncomment ReCaptcha. Validate and
-                        replace 'PRIVATE_KEY' with your private key.
-                        Register for reCAPTCHA keys at <a href="http://recaptcha.net">reCAPTCHA.net</a>.
-                    </p>
-                </div>
+
+
+                <div class="g-recaptcha" data-sitekey="6LfqEB0TAAAAADNTY8OJoCVEg_Nqs08OGV5UYu8T"></div>
+
+
                 @*
-                @ReCaptcha.GetHtml("PUBLIC_KEY", theme: "white")
+                @ReCaptcha.GetHtml("6LfqEB0TAAAAADNTY8OJoCVEg_Nqs08OGV5UYu8T", theme: "white")
                 @Html.ValidationMessage("recaptcha")
-                *@
+               *@
+                
             </li>
             <li class="image-upload">   <!--TODO: CSS Style: class and id-->
                 <label for="Image">Image</label>
