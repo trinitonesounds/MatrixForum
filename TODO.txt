@@ -40,8 +40,10 @@ Member Page
         Query the db on each page load (most likely)
     - Add Aside
     - allows <script>alert("This is a test")</script> but .NET catches it as "suspicious".
+    - Validate mesage size.
     - CSS Style messageTextArea
     - CSS Style postMessage
+        fixed widths on the post columns
 
 Aside
     - See the "About" page for how the Aside is coded.
