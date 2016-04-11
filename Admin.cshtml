@@ -1,12 +1,14 @@
 ﻿@{
     Layout = "~/_SiteLayout.cshtml";
     Page.Title = "Admin";
+    // deny access to any user not an Admin
     if (!User.IsInRole("Admin")) {
         Response.Redirect("~/404");
     }
 
+    // open the database
     var db = Database.Open("StarterSite");
-    var selectQuery="SELECT * FROM UserProfile ORDER BY MemberSince DESC";
+    //var selectQuery="SELECT * FROM UserProfile ORDER BY MemberSince DESC";
     
     // Session Variables - Not sure if we're going to use these yet.  Maybey use something
     // like this for the "Most Followed"
@@ -15,12 +17,13 @@
     Session["Info"]=myInfo;
     AppState["MyApplication"]="My Application Variable";
     
-    
-    var roleQuery="SELECT * " +
-                "FROM UserProfile, webpages_UsersInRoles, webpages_Roles " +
-                "WHERE UserProfile.UserId=webpages_UsersInRoles.UserId " + 
-                "AND webpages_UsersInRoles.RoleId=webpages_Roles.RoleId " +
-                "ORDER BY UserProfile.UserId ASC";
+    // Query String that mat matches the UserId's between tables
+    var roleQueryString = "SELECT DISTINCT * " +
+                          "FROM UserProfile, webpages_UsersInRoles, webpages_Roles " +
+                          "WHERE UserProfile.UserId = webpages_UsersInRoles.UserId " + 
+                          //"AND webpages_UsersInRoles.RoleId = webpages_Roles.RoleId " +
+                          "AND webpages_UsersInRoles.RoleId = webpages_Roles.RoleId " +
+                          "ORDER BY UserProfile.UserId ASC";
                     
 }
 
@@ -34,6 +37,8 @@
     <body>
         <h1>Admin Page</h1>
         
+        <h2>User Administration</h2>
+
         <table border="1">
             <thead>
                 <tr>
@@ -47,11 +52,12 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach(var row in db.Query(roleQuery)){
-                <!-- TODO: What are these here for?  Are we going to use these cookies? -->
+            @foreach(var row in db.Query(roleQueryString)){
+                <!-- TODO: What are these here for?  Are we going to use these cookies? 
                 Response.Cookies["UserInfo"].Value="User Information";
                 Response.Cookies["UserInfo"]["Email"]=row.Email;
                 Response.Cookies["UserInfo"]["Time"]=DateTime.Now.ToLongDateString();
+                -->
                 <tr>
                     <!-- TODO: Edit user currently Errors -->
                     <td><a href="@Href("~/UpdateUser",row.UserID)">Edit</a></td>

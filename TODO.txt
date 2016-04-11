@@ -15,14 +15,14 @@ Register Page
     - My guess is that the DB INSERT item should have newFileName==null  (not tested)
  - Captcha Setup
  - Check for duplicate username (I see code but not yet tested)
+ - Use HTML5 input type="email"
  
  Admin Page - Users
-    - Edit user from Admin Page Errors (It was copied from EditProduct)
+    - Edit user password
         See the "Manage" page for changing password, etc.
-        - What will it edit
-            - Password
-            - Profile Picture
-            - Email address
+    - When a user is an Admin, it double lists the user as a Member and an Admin
+    - Validation of fields
+    - CSS Styles 
 
 Admin Page - Charts
     - Decide which 3 to show...

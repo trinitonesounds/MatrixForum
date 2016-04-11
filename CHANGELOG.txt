@@ -55,3 +55,8 @@ it does select the correct userID (according to the/# in follow link) but it sti
 - First chart working.  Not cached or linked yet.
 - Fixed Follow page filtering.  You had the right idea and were close.
 - Admin Users table now matches assignment sheet
+- Update Users Page:
+    - deny access to non-Admin role
+    - update username
+    - update email
+    - update picture
