@@ -20,7 +20,16 @@
     //Variables for Forum Posts
     var userId = WebSecurity.CurrentUserId;
     var newPost = Request["messageTextArea"];
-    
+
+    // Validation code for Post
+    Validation.RequireField("messageTextArea", "You must enter a message between 1 and 242 characters.");
+    Validation.Add("messageTextArea",
+        Validator.StringLength(
+            maxLength: 242,
+            minLength: 1,
+            errorMessage: "Message must be at least 1 characters and less than 242 characters."));
+
+        
     //Pull Picture from database
     var username = WebSecurity.CurrentUserName;
     var currentUserProfile = db.QuerySingle("SELECT Username,Picture FROM UserProfile WHERE LOWER(Email) = LOWER(@0)", username);
@@ -31,13 +40,15 @@
     
     // Post message into ForumPosts table
     if (IsPost) {
-        newPost = Request["messageTextArea"];
-        if (String.IsNullOrWhiteSpace(newPost)) {
-            ModelState.AddError("messageTextArea","Message Text required");
-        }
-        if (ModelState.IsValid) {
-            var insertQuery = "INSERT INTO ForumPosts (PostMessage,PostFrom) VALUES (@0,@1)";
-            db.Execute(insertQuery, newPost, userId);
+        if (Validation.IsValid()) {
+            newPost = Request["messageTextArea"];
+            if (String.IsNullOrWhiteSpace(newPost)) {
+                ModelState.AddError("messageTextArea","Message Text required");
+            }
+            if (ModelState.IsValid) {
+                var insertQuery = "INSERT INTO ForumPosts (PostMessage,PostFrom) VALUES (@0,@1)";
+                db.Execute(insertQuery, newPost, userId);
+            }
         }
     }
 
@@ -71,11 +82,15 @@
         
     <p>What are you doing?</p>
     <form method="post" action="" >
-        <textarea class="messageTextArea" id="messageTextArea" name="messageTextArea" autofocus></textarea>
+        @Html.ValidationSummary("Message Post was unsuccessful. Please correct the errors and try again.", 
+                                excludeFieldErrors: true, htmlAttributes: null)
+        <textarea class="messageTextArea" id="messageTextArea" name="messageTextArea" autofocus  @Validation.For("messageTextArea")></textarea>
+        @* Write any email validation errors to the page *@
+        @Html.ValidationMessage("messageTextArea")
         <input class="postMessage" type="submit" value="Post Message" />
     </form>
         
-    @Html.ValidationSummary("Error with your submission")
+    @*@Html.ValidationSummary("Error with your submission")*@
 
     <!-- Message Posts below -->
     <!-- I used a table for now, just to get the data displaying.  
