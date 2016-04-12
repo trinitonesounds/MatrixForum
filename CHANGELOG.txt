@@ -67,3 +67,6 @@ April 10 (Tom)
 - Added reCAPTCHA, but it looks different than in mourad's project.pdf. But i followed the instructions given so I think it will be good
 - Added Admin dropdown, just need to add links to pages
 - Published website on Azure: http://master-april10-4pm.azurewebsites.net/
+
+* Tue Apr 12 2016 Curtis Hildebrand <info@curtishildebrand.com> 0.0.1
+- Validate Message Post size to 242 characters
