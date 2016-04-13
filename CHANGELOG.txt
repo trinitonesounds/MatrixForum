@@ -74,3 +74,5 @@ April 10 (Tom)
     - use default profile image if no image selected or file is invalid
 - User Delete: Delete the profile picture with the user.
     - Cleanup and optimize code
+    - Restrict access to Admin only
+- Remove Unused Files
