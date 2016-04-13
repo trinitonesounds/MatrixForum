@@ -1,0 +1,84 @@
+﻿@{
+    var db = Database.Open("StarterSite");
+    //Get the rows of UserID's into an arraw
+    var username = db.Query("SELECT Username FROM UserProfile");
+    var postData = db.Query("SELECT PostId FROM ForumPosts");
+    //var data =db.Query("SELECT Product, Price FROM Product");
+
+    username= username.ToArray();
+
+    
+    // convert the db query object to an array (in order to get the Length)
+
+
+
+
+     string[] usernames = new string[username.Length]; // create the array with the proper lenght
+            for (int j = 0; j < username.Length - 1; j++)
+            {
+                usernames[j] = username[j].ToString(); 
+            }
+
+
+
+    var numPosts = postData.ToArray();
+
+
+    @*
+    test=username.ToArray;
+    test=test.length();
+
+     foreach(var row in username) {
+         while(i<test){
+             
+         usernames = usernames+usernames[i];};
+
+         }
+    *@
+
+    //Create the chart
+    var profilesChart = new Chart(width:800, height:600, theme:ChartTheme.Blue);
+    //var myChart = new Chart(width:600,height:400,theme:ChartTheme.Vanilla3D);
+    
+    profilesChart.AddTitle("Number of Posts per User");
+    //myChart.AddTitle("Product Sales");
+    
+
+    //profilesChart.DataBindTable(dataSource:numUsers.Length, xField:data.);
+    profilesChart.AddSeries(name:"Users", 
+                            xValue:usernames, 
+                            yValues:usernames);
+    //myChart.DataBindTable(dataSource:data,xField:"Product");
+    
+    profilesChart.Write();
+    //myChart.Write();
+
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+
+<body>
+
+
+    @usernames
+
+
+    <table>
+        <tbody>
+    @foreach(var row in username) {
+        <tr><td>@row.username</td></tr>
+    }
+            </tbody>
+   </table>
+
+        @foreach(var row in username) {@row.username}
+
+
+</body>
+</html>
