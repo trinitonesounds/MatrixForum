@@ -76,3 +76,4 @@ April 10 (Tom)
     - Cleanup and optimize code
     - Restrict access to Admin only
 - Remove Unused Files
+- Add chart cshtml to Admin Page
