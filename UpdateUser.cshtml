@@ -139,8 +139,9 @@
                 </li>
                 <li class="image-upload">           <!--TODO: CSS Style: class and id-->
                     <label for="Image">Image</label>
-                    @* TODO: Validation like previous entries?  Also value="" field *@
                     <input type="file" id="Image" name="Image" /> <br/>
+                    @* TODO: Validation like previous entries?  Also value="" field *@
+                    @Html.ValidationMessage("Image")
                 </li>
             </ol>
 

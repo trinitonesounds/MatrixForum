@@ -1,32 +1,41 @@
 ﻿@{
     Layout="~/_SiteLayout.cshtml";
     var db = Database.Open("StarterSite");
-    var userID=UrlData[0];                                      <!--get the ID from the URL -->
+
+    if (!User.IsInRole("Admin")) {
+        Response.Redirect("~/404");
+    }
+
+    var userID=UrlData[0];                       <!--get the ID from the URL -->
 
     if (userID.IsEmpty()) {
         Response.Redirect(@Href("~/Admin"));
     }
 
     <!-- User must be deleted from the Roles table before deleting from UserProfiles table -->
-    var rowRoles = db.QuerySingle("SELECT * FROM webpages_UsersInRoles WHERE UserId=@0", userID);
+    //var rowRoles = db.QuerySingle("SELECT * FROM webpages_UsersInRoles WHERE UserId=@0", userID);
     if (IsPost && !userID.IsEmpty()) {
         var deleteQueryString = "DELETE FROM webpages_UsersInRoles WHERE UserId=@0";
         db.Execute(deleteQueryString,userID);
     }
 
-    var rowUser = db.QuerySingle("SELECT * FROM UserProfile WHERE UserId=@0", userID);
     if (IsPost && !userID.IsEmpty()) {                          <!-- Uses IsPost for a "confirm" button-->
+        var rowUser = db.QuerySingle("SELECT Picture FROM UserProfile WHERE UserId=@0", userID);
         var deleteQueryString = "DELETE FROM UserProfile WHERE UserId=@0";
+        var profileImage = rowUser.Picture;
+        // Don't delete the default profile picture
+        if (profileImage != "defaultProfilePicture.jpg") {
+            var fullPath = Server.MapPath("~/Images/" + profileImage);
+            if (File.Exists(fullPath)) {
+                File.Delete(fullPath);
+            }
+        }
         db.Execute(deleteQueryString,userID);
         Response.Redirect("~/Admin");
     }
 
-
-
-
-    var username = WebSecurity.CurrentUserName;
-    var selectedUser = db.QuerySingle("SELECT UserId,Picture FROM UserProfile WHERE UserProfile.UserId = @0", userID);
-    var selectedUsername = db.QuerySingle("SELECT Username FROM UserProfile WHERE UserProfile.UserId=@0", userID);
+    // The selected user in the URLData
+    var selectedUser = db.QuerySingle("SELECT UserId,Picture,Email,Username FROM UserProfile WHERE UserProfile.UserId = @0", userID);
     
 }
 
@@ -45,8 +54,9 @@
 
             <img src="~/Images/@selectedUser.Picture" alt="profImg" width="300px">
 
-            <p>Email: @rowUser.Email <br /> </p>
-            <p>Username: @selectedUsername.Username <br /> </p>
+            <p>Email: @selectedUser.Email <br /> </p>
+            <p>Username: @selectedUser.Username <br /> </p>
+            <p>Picture: @selectedUser.Picture</p>
             <p><input type="submit" value="Delete" /></p>
         
         </form>

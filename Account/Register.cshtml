@@ -22,11 +22,15 @@
     WebImage photo = null;
     var newFileName = "";
     var imagePath = "";
+    var imageType = "";
 
     // Setup validation
     Validation.RequireField("username", "You must specify a username.");
     Validation.RequireField("email", "You must specify an email address.");
     Validation.RequireField("password", "Password cannot be blank.");
+    //Validation.RequireField("Image", "Photo must be either a jpg or png less than 200kb.");
+
+    // Validate Password
     Validation.Add("confirmPassword",
         Validator.EqualsTo("password", "Password and confirmation password do not match."));
     Validation.Add("password",
@@ -35,7 +39,6 @@
             minLength: 6,
             errorMessage: "Password must be at least 6 characters"));
 
-
     //Username Validation
     Validation.Add("username",
         Validator.StringLength(
@@ -43,16 +46,45 @@
             minLength: 5,
             errorMessage: "username must be at least 5 characters"));
 
-
+    // Validate email
+    Validation.Add("email", 
+        Validator.Regex(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$", 
+        "Invalid format for an email address")
+        );
+    
     // If this is a POST request, validate and process data
     if (IsPost) {
         AntiForgery.Validate();
 
         username = Request.Form["username"];
-        photo = WebImage.GetImageFromRequest();
+        //WebImage photo = new WebImage(Request.InputStream);
+        photo = WebImage.GetImageFromRequest("Image");
         email = Request.Form["email"];
         password = Request.Form["password"];
         confirmPassword = Request.Form["confirmPassword"];
+
+        // Validate and Upload Image:
+        if(photo != null){
+            // TODO: Better filename choice??
+            imageType = photo.ImageFormat;
+            newFileName = Guid.NewGuid().ToString() + "_" + imageType + "_" + Path.GetFileName(photo.FileName);
+            imagePath = @"Images\" + newFileName;
+            
+            photo.Save(@"~\" + imagePath);
+            if ((imageType == "jpeg") || (imageType == "png") ) {
+                photo.Save(@"~\" + imagePath);
+            } else {
+            //    photo = null;
+                ModelState.AddError("Image","Your photo must be either jpg or png.");
+            }
+                    
+        } else {
+            // If an invalid file was uploaded, WebImage.getImageFromRequest does not retreive it.  
+            // Instead, use the default profile picture.
+            newFileName = "defaultProfilePicture.jpg";
+        }
+        // TODO: Default image needs to be set if photo==null
+
 
         // Validate the user's captcha answer
         // if (!ReCaptcha.Validate("PRIVATE_KEY")) {
@@ -60,7 +92,7 @@
         // }
 
         // If all information is valid, create a new account
-        if (Validation.IsValid()) {
+        if (Validation.IsValid() && (ModelState.IsValid)) {
             // Insert a new user into the database
             var db = Database.Open("StarterSite");
 
@@ -72,16 +104,7 @@
 
             //EMAIL AND USERNAME AND IMAGE
             if (user == null && userName == null) {
-                //UPLOAD IMAGE:
-                if(photo != null){
-                    // TODO: Better filename choice??
-                    newFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
-                    imagePath = @"Images\" + newFileName;
-                    photo.Save(@"~\" + imagePath);
-                }
-                // TODO: Default image needs to be set if photo==null
-
-
+                
                 // Insert email, photo and username into the profile table
                 db.Execute("INSERT INTO UserProfile (Email, Username, Picture) VALUES (@0,@1,@2)", email, username, newFileName);
 
@@ -132,12 +155,15 @@
 }
 
 <!DOCTYPE html>
-
+<html lang="en>">
 <head>
     
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
 </head>
+
+<body>
+
 <hgroup class="title">
     <h1>@Page.Title.</h1>
     <h2>Create a new account.</h2>
@@ -176,7 +202,7 @@
                 <input type="password" id="confirmPassword" name="confirmPassword" @Validation.For("confirmPassword") />
                 @* Write any password validation errors to the page *@
                 @Html.ValidationMessage("confirmPassword")
-            </li><br>
+            </li>
             <!-- TODO: Captcha SETUP -->
             <li class="recaptcha">
 
@@ -192,11 +218,15 @@
             </li>
             <li class="image-upload">   <!--TODO: CSS Style: class and id-->
                 <label for="Image">Image</label>
-                @* TODO: Validation like previous entries?  Also value="" field *@
                 <input type="file" id="Image" name="Image" /> <br/>
+                @* TODO: Validation like previous entries?  Also value="" field *@
+                @Html.ValidationMessage("Image")
             </li>
         </ol>
         
         <input type="submit" value="Register" />
     </fieldset>
 </form>
+
+</body>
+</html>
