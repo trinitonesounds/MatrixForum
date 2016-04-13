@@ -70,3 +70,7 @@ April 10 (Tom)
 
 * Tue Apr 12 2016 Curtis Hildebrand <info@curtishildebrand.com> 0.0.1
 - Validate Message Post size to 242 characters
+- Validate Images:  only allow jpg or png
+    - use default profile image if no image selected or file is invalid
+- User Delete: Delete the profile picture with the user.
+    - Cleanup and optimize code
